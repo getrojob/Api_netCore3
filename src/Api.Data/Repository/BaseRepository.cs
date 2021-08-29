@@ -53,14 +53,14 @@ namespace Api.Data.Repository
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Erro ao Inserir", ex);
             }
 
             return item;
         }
 
-        public async Task<bool> ExistAsync (Guid id){
+        public async Task<bool> ExistAsync (Guid id)
+        {
             return await _dataset.AnyAsync (p => p.Id.Equals(id));
         }
 
@@ -68,7 +68,7 @@ namespace Api.Data.Repository
         {
             try
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
+                return await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
             }
             catch (Exception ex)
             {
