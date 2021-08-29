@@ -12,16 +12,29 @@ namespace Api.Data.Repository
     {
 
         protected readonly MyContext _context;
-        private DbSet<T> _dataset;
+        private readonly DbSet<T> _dataset;
         public BaseRepository(MyContext context)
         {
             _context = context;
             _dataset = _context.Set<T>();
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+           try
+           {
+               var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(id));
+               if (result == null)
+                   return false;
+
+                _dataset.Remove(result);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+           catch (Exception ex)
+           {
+               throw new Exception("Erro ao Deletar", ex);
+           }
         }
 
         public async Task<T> InsertAsync(T item)
@@ -41,7 +54,7 @@ namespace Api.Data.Repository
             catch (Exception ex)
             {
 
-                throw ex;
+                throw new Exception("Erro ao Inserir", ex);
             }
 
             return item;
@@ -73,7 +86,7 @@ namespace Api.Data.Repository
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Erro ao atualizar", ex);
             }
             return item;
         }
