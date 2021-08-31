@@ -9,7 +9,7 @@ namespace Api.Service.Services
 {
     public class UserService : IUserService
     {
-        private IRepository<UserEntity> _repository;
+        private readonly IRepository<UserEntity> _repository;
         public UserService(IRepository<UserEntity> repository)
         {
             _repository = repository;
