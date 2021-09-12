@@ -12,7 +12,6 @@ namespace Api.Service.Services
         {
             _repository = repository;
         }
-
         public async Task<object> FindByLogin(UserEntity user)
         {
             if (user != null && !string.IsNullOrWhiteSpace(user.Email))
