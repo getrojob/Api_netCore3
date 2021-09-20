@@ -5,10 +5,10 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Api.Domain.Dtos;
 using Api.Domain.Entities;
+using Api.Domain.Interfaces.Repository;
 using Api.Domain.Interfaces.Services.User;
-using Api.Domain.Repository;
 using Api.Domain.Security;
-using AutoMapper.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Service.Services
@@ -19,20 +19,20 @@ namespace Api.Service.Services
         private readonly SigningConfigurations _signingConfigurations;
         private readonly TokenConfigurations _tokenConfigurations;
         private IConfiguration _configuration { get; }
+
         public LoginService(IUserRepository repository,
+                            IConfiguration configuration,
                             SigningConfigurations signingConfigurations,
-                            TokenConfigurations tokenConfigurations,
-                            IConfiguration configuration)
+                            TokenConfigurations tokenConfigurations)
         {
             _repository = repository;
             _signingConfigurations = signingConfigurations;
-            _tokenConfigurations = tokenConfigurations;
             _configuration = configuration;
+            _tokenConfigurations = tokenConfigurations;
         }
         public async Task<object> FindByLogin(LoginDto user)
         {
-            var baseUser = new UserEntity();
-
+            UserEntity baseUser = null;
             if (user != null && !string.IsNullOrWhiteSpace(user.Email))
             {
                 baseUser = await _repository.FindByLogin(user.Email);
@@ -50,12 +50,12 @@ namespace Api.Service.Services
                         new GenericIdentity(user.Email),
                         new[]
                         {
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                            new Claim(JwtRegisteredClaimNames.UniqueName, user.Email)
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //jti O id do token
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
                         }
                     );
                     DateTime createDate = DateTime.Now;
-                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
+                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfigurations.Seconds);  //60 segundos = 1 minuto
 
                     var handler = new JwtSecurityTokenHandler();
                     string token = CreateToken(identity, createDate, expirationDate, handler);
@@ -71,6 +71,7 @@ namespace Api.Service.Services
                 };
             }
         }
+
         private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler)
         {
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
@@ -100,6 +101,5 @@ namespace Api.Service.Services
                 message = "Usuário Logado com sucesso"
             };
         }
-
     }
 }

@@ -35,12 +35,13 @@ namespace application
             ConfigureRepository.ConfigureDependenciesRepository(services);
 
             var signingConfigurations = new SigningConfigurations();
-            services.AddSingleton(signingConfigurations);
+            services.AddSingleton(signingConfigurations); //Instancia Unica
 
             var tokenConfigurations = new TokenConfigurations();
             new ConfigureFromConfigurationOptions<TokenConfigurations>(
                 Configuration.GetSection("TokenConfigurations"))
-                .Configure(tokenConfigurations);
+                    .Configure(tokenConfigurations);
+            services.AddSingleton(tokenConfigurations);  //Instancia Unica
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
