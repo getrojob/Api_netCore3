@@ -25,15 +25,7 @@ namespace Api.Domain.Models
             set { _email = value; }
         }
 
-        private DateTime _createAt;
-        public DateTime CreateAt
-        {
-            get { return _createAt; }
-            set
-            {
-                _createAt = value == null ? DateTime.UtcNow : value;
-            }
-        }
+        public DateTime CreateAt { get; set; } = DateTime.UtcNow;
 
         private DateTime _updateAt;
         public DateTime UpdateAt
@@ -41,7 +33,6 @@ namespace Api.Domain.Models
             get { return _updateAt; }
             set { _updateAt = value; }
         }
-
 
     }
 }
