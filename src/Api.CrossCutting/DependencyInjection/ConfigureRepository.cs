@@ -1,3 +1,4 @@
+using System;
 using Api.Data.Context;
 using Api.Data.Implementations;
 using Api.Data.Repository;
@@ -16,14 +17,18 @@ namespace Api.CrossCutting.DependencyInjection
             serviceCollection.AddScoped<IUserRepository, UserImplementation>();
 
 
-            serviceCollection.AddDbContext<MyContext>(
-                options => options.UseMySql("Server=localhost;Port=3306;Database=dbAPI;Uid=root;Pwd=vetrigo")
-
-
-            // serviceCollection.AddDbContext<MyContext>(options =>
-            // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); 
-            // options.UseSqlServer("Server=.\\SQLEXPRESS;Initial Catalog=dbAPI;Trusted_Connection=True;MultipleActiveResultSets=true")
-            );
+            if (Environment.GetEnvironmentVariable("DATABASE").ToLower() == "MSSQL".ToLower())
+            {
+                serviceCollection.AddDbContext<MyContext>(
+                    options => options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_SQLSERVER"))
+                );
+            }
+            else
+            {
+                serviceCollection.AddDbContext<MyContext>(
+                    options => options.UseMySql(Environment.GetEnvironmentVariable("DB_CONNECTION_MYSQL"))
+                );
+            }
         }
     }
 }
