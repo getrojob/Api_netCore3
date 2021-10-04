@@ -21,8 +21,11 @@ namespace Api.Data.Test
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddDbContext<MyContext>(o =>
-            o.UseMySql($"Server=localhost;Port=3306;Database={dataBaseName};Uid=root;Pwd=vetrigo"),
+            // o.UseMySql($"Server=localhost;Port=3306;Database={dataBaseName};Uid=root;Pwd=vetrigo"),
+            o.UseSqlite("Filename=Test.db"),
             ServiceLifetime.Transient);
+
+
 
             ServiceProvider = serviceCollection.BuildServiceProvider();
             using (var context = ServiceProvider.GetService<MyContext>())
