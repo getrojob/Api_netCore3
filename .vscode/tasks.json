@@ -43,7 +43,7 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "teste",
+                "test",
                 "${workspaceFolder}/src/Api.Data.Test/Api.Data.Test.csproj"
             ],
             "problemMatcher": []
@@ -53,10 +53,10 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "teste",
+                "test",
                 "${workspaceFolder}/src/Api.Service.Test/Api.Service.Test.csproj"
             ],
             "problemMatcher": []
-        }
+        },
     ]
 }
