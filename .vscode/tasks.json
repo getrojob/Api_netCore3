@@ -44,8 +44,9 @@
             "type": "process",
             "args": [
                 "teste",
-                "${workspaceFolder}/src/Api.Data.Test/Api.Data.Test.csproj",
-            ]
+                "${workspaceFolder}/src/Api.Data.Test/Api.Data.Test.csproj"
+            ],
+            "problemMatcher": []
         },
         {
             "label": "Service.Testes",
@@ -53,8 +54,9 @@
             "type": "process",
             "args": [
                 "teste",
-                "${workspaceFolder}/src/Api.Service.Test/Api.Service.Test.csproj",
-            ]
+                "${workspaceFolder}/src/Api.Service.Test/Api.Service.Test.csproj"
+            ],
+            "problemMatcher": []
         }
     ]
 }
