@@ -12,7 +12,7 @@ namespace Api.Service.Test.Usuario
     {
         private IUserService _service;
         private Mock<IUserService> _serviceMock;
-        [Fact(DisplayName = "É Possivel Executar o Método GET.")]
+        [Fact(DisplayName = "É Possivel Executar o Método GETAll.")]
         public async Task E_Possivel_Executar_Metodo_GetAll()
         {
             _serviceMock = new Mock<IUserService>();
