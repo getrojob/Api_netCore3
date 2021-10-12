@@ -9,7 +9,8 @@ namespace Api.Service.Test.Usuario
     {
         private IUserService _service;
         private Mock<IUserService> _serviceMock;
-        [Fact(DisplayName = "É Possivel Executar o Método Create.")]
+
+        [Fact(DisplayName = "É Possivel executar o Método Create.")]
         public async Task E_Possivel_Executar_Metodo_Create()
         {
             _serviceMock = new Mock<IUserService>();
