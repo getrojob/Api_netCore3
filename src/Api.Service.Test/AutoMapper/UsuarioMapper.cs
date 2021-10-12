@@ -75,6 +75,22 @@ namespace Api.Service.Test.AutoMapper
             Assert.Equal(userDtoUpdateResult.Name, entity.Name);
             Assert.Equal(userDtoUpdateResult.Email, entity.Email);
             Assert.Equal(userDtoUpdateResult.UpdateAt, entity.UpdateAt);
+
+            //Dto para Model
+            var userModel = Mapper.Map<UserDto>(userDto);
+            Assert.Equal(userModel.Id, userDto.Id);
+            Assert.Equal(userModel.Name, userDto.Name);
+            Assert.Equal(userModel.Email, userDto.Email);
+            Assert.Equal(userModel.CreateAt, userDto.CreateAt);
+
+            var userDtoCreate = Mapper.Map<UserDtoCreate>(userModel);
+            Assert.Equal(userDtoCreate.Name, userModel.Name);
+            Assert.Equal(userDtoCreate.Email, userModel.Email);
+
+            var userDtoUpdate = Mapper.Map<UserDtoUpdate>(userModel);
+            Assert.Equal(userDtoUpdate.Id, userModel.Id);
+            Assert.Equal(userDtoUpdate.Name, userModel.Name);
+            Assert.Equal(userDtoUpdate.Email, userModel.Email);
         }
     }
 }
