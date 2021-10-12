@@ -74,7 +74,7 @@ namespace Api.Service.Test.AutoMapper
             Assert.Equal(userDtoUpdateResult.Id, entity.Id);
             Assert.Equal(userDtoUpdateResult.Name, entity.Name);
             Assert.Equal(userDtoUpdateResult.Email, entity.Email);
-            Assert.Equal(userDtoUpdateResult.UpdateAt, entity.CreateAt);
+            Assert.Equal(userDtoUpdateResult.UpdateAt, entity.UpdateAt);
         }
     }
 }
