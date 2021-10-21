@@ -25,6 +25,9 @@
                 "DB_CONNECTION_MYSQL": "Server=localhost;Port=3306;Database=dbAPI;Uid=root;Pwd=vetrigo",
                 "DATABASE": "MSSQL",
                 "MIGRATION": "APLICAR",
+                "Audience": "ExemploAudience",
+                "Issuer": "ExemploIssuer",
+                "Seconds": "28800"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

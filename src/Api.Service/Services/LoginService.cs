@@ -17,18 +17,16 @@ namespace Api.Service.Services
     {
         private readonly IUserRepository _repository;
         private readonly SigningConfigurations _signingConfigurations;
-        private readonly TokenConfigurations _tokenConfigurations;
         private IConfiguration _configuration { get; }
 
         public LoginService(IUserRepository repository,
                             IConfiguration configuration,
-                            SigningConfigurations signingConfigurations,
-                            TokenConfigurations tokenConfigurations)
+                            SigningConfigurations signingConfigurations)
         {
             _repository = repository;
             _signingConfigurations = signingConfigurations;
             _configuration = configuration;
-            _tokenConfigurations = tokenConfigurations;
+
         }
         public async Task<object> FindByLogin(LoginDto user)
         {
@@ -55,7 +53,7 @@ namespace Api.Service.Services
                         }
                     );
                     DateTime createDate = DateTime.Now;
-                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfigurations.Seconds);  //60 segundos = 1 minuto
+                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(Convert.ToInt16(Environment.GetEnvironmentVariable("seconds")));  //60 segundos = 1 minuto
 
                     var handler = new JwtSecurityTokenHandler();
                     string token = CreateToken(identity, createDate, expirationDate, handler);
@@ -76,8 +74,8 @@ namespace Api.Service.Services
         {
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _tokenConfigurations.Issuer,
-                Audience = _tokenConfigurations.Audience,
+                Issuer = Environment.GetEnvironmentVariable("Issuer"),
+                Audience = Environment.GetEnvironmentVariable("Audience"),
                 SigningCredentials = _signingConfigurations.SigningCredentials,
                 Subject = identity,
                 NotBefore = createDate,

@@ -68,5 +68,15 @@
             ],
             "problemMatcher": []
         },
+        {
+            "label": "Integration.Testes",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/src/Api.Integration.Test/Api.Integration.Test.csproj"
+            ],
+            "problemMatcher": []
+        },
     ]
 }
