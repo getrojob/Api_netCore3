@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Api.Application.Test.Usuario.QuandoRequisitarGet
 {
-    public class Retorno_Get
+    public class Retorno_BadRequest
     {
         private UsersController? _controller;
         
@@ -30,13 +30,10 @@ namespace Api.Application.Test.Usuario.QuandoRequisitarGet
                 }    
             );
 
-            _controller = new UsersController(serviceMock.Object); 
+            _controller = new UsersController(serviceMock.Object);
+            _controller.ModelState.AddModelError("Id", "Formato Inválido");
             var result = await _controller.Get(Guid.NewGuid());
-            Assert.True(result is OkObjectResult);
-            var resultValue = ((OkObjectResult)result).Value as UserDto;
-            Assert.NotNull(resultValue);
-            Assert.Equal(nome, resultValue?.Name);
-            Assert.Equal(email, resultValue?.Email);
+            Assert.True(result is BadRequestObjectResult);
         }
     }
 }
