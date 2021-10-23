@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace application
@@ -25,6 +24,7 @@ namespace application
             Configuration = configuration;
             _environment = environment;
         }
+
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment _environment { get; }
 
@@ -37,7 +37,7 @@ namespace application
                 Environment.SetEnvironmentVariable("DATABASE", "MSSQL");
                 Environment.SetEnvironmentVariable("MIGRATION", "APLICAR");
                 Environment.SetEnvironmentVariable("Audience", "ExemploAudience");
-                Environment.SetEnvironmentVariable("Issuer", "ExemploIssuer");
+                Environment.SetEnvironmentVariable("Issuer", "ExemploIssue");
                 Environment.SetEnvironmentVariable("Seconds", "28800");
             }
             ConfigureService.ConfigureDependenciesService(services);
@@ -56,12 +56,6 @@ namespace application
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations); //Instancia Unica
 
-            var tokenConfigurations = new TokenConfigurations();
-            new ConfigureFromConfigurationOptions<TokenConfigurations>(
-                Configuration.GetSection("TokenConfigurations"))
-                    .Configure(tokenConfigurations);
-            services.AddSingleton(tokenConfigurations);  //Instancia Unica
-
             services.AddAuthentication(authOptions =>
             {
                 authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,8 +64,8 @@ namespace application
             {
                 var paramsValidation = bearerOptions.TokenValidationParameters;
                 paramsValidation.IssuerSigningKey = signingConfigurations.Key;
-                paramsValidation.ValidAudience = tokenConfigurations.Audience;
-                paramsValidation.ValidIssuer = tokenConfigurations.Issuer;
+                paramsValidation.ValidAudience = Environment.GetEnvironmentVariable("Audience");
+                paramsValidation.ValidIssuer = Environment.GetEnvironmentVariable("Issuer");
 
                 // Valida a assinatura de um token recebido
                 paramsValidation.ValidateIssuerSigningKey = true;
@@ -122,10 +116,11 @@ namespace application
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                     {
                         new OpenApiSecurityScheme {
-                            Reference = new OpenApiReference{
+                            Reference = new OpenApiReference {
                                 Id = "Bearer",
                                 Type = ReferenceType.SecurityScheme
                             }
@@ -161,7 +156,7 @@ namespace application
             if (Environment.GetEnvironmentVariable("MIGRATION").ToLower() == "APLICAR".ToLower())
             {
                 using (var service = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                .CreateScope())
+                                                            .CreateScope())
                 {
                     using (var context = service.ServiceProvider.GetService<MyContext>())
                     {
