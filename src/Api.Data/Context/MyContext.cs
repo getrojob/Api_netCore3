@@ -8,7 +8,11 @@ namespace Api.Data.Context
     public class MyContext : DbContext
     {
         public DbSet<UserEntity> Users { get; set; }
-        public MyContext(DbContextOptions<MyContext> options) : base(options) { }
+
+        public MyContext(DbContextOptions<MyContext> options) : base(options)
+        {
+
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -19,11 +23,13 @@ namespace Api.Data.Context
                 {
                     Id = Guid.NewGuid(),
                     Name = "Administrador",
-                    Email = "getrojob@gmail.com",
+                    Email = "getrojob@mail.com",
                     CreateAt = DateTime.Now,
                     UpdateAt = DateTime.Now,
                 }
             );
+
         }
+
     }
 }

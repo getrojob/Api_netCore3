@@ -74,6 +74,18 @@ namespace Api.Integration.Test.Usuario
             Assert.NotNull(registroSelecionando);
             Assert.Equal(registroSelecionando.Name, registroAtualizado.Name);
             Assert.Equal(registroSelecionando.Email, registroAtualizado.Email);
+
+            //Delete
+
+            response = await client.DeleteAsync($"{hostApi}users/{registroSelecionando.Id}");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            // Get Id depois do Delete
+
+            response = await client.GetAsync($"{hostApi}users/{registroAtualizado.Id}");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+
         }
     }
 }

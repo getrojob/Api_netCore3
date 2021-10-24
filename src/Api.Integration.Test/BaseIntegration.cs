@@ -42,7 +42,7 @@ namespace Api.Integration.Test
         {
             var loginDto = new LoginDto()
             {
-                Email = "teste@mail.com"
+                Email = "getrojob@gmail.com"
             };
 
             var resultLogin = await PostJsonAsync(loginDto, $"{hostApi}login", client);
@@ -51,8 +51,6 @@ namespace Api.Integration.Test
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",
                                                          loginObject.accessToken);
-
-
         }
 
         public static async Task<HttpResponseMessage> PostJsonAsync(object dataclass, string url, HttpClient client)
