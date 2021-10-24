@@ -23,7 +23,7 @@ namespace Api.Data.Context
                 {
                     Id = Guid.NewGuid(),
                     Name = "Administrador",
-                    Email = "getrojob@mail.com",
+                    Email = "getrojob@gmail.com",
                     CreateAt = DateTime.Now,
                     UpdateAt = DateTime.Now,
                 }
